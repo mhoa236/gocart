@@ -1,4 +1,4 @@
-import imagekit from "@/configs/imagekit";
+import imagekit from "@/configs/imageKit";
 import prisma from "@/lib/prisma";
 import authSeller from "@/middlewares/authSeller";
 import { getAuth } from "@clerk/nextjs/server";
@@ -39,7 +39,7 @@ export async function POST(request) {
                 path: response.filePath,
                 transformation: [
                     {quality: 'auto'},
-                    {format: 'webp'} 
+                    {format: 'webp'}, 
                     {width: '1024'}
                 ]
             })
