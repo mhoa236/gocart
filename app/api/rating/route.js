@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 
 
 //Add new rating
-export async function POST(request) {
+export async function GET(request) {
     try {
         const {useIdr} = getAuth(request)
         const {orderId, productId, rating, review} = await request.json()
