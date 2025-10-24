@@ -1,11 +1,12 @@
 'use client'
 import PageTitle from "@/components/PageTitle"
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import OrderItem from "@/components/OrderItem";
 import { useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Loading from "@/components/Loading";
 
 export default function Orders() {
 
@@ -37,7 +38,7 @@ export default function Orders() {
     }, [isLoaded, user, getToken, router]);
 
     if (!isLoaded || loading) {
-        return <loading />
+        return <Loading />
     }
 
     return (
