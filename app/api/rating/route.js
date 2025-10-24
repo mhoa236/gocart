@@ -1,6 +1,5 @@
 import prisma from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
-import { jsonErrorSchema } from "inngest/types";
 import { NextResponse } from "next/server";
 
 
