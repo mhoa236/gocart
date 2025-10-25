@@ -26,14 +26,9 @@ export async function POST(request) {
 export async function GET(request) {
     try {
         const {userId} = getAuth(request)
+        
         const user = await prisma.user.findUnique({
             where: {id: userId}
-        })
-
-        //Save cart to user object
-        await prisma.user.update({
-            where: {id: userId},
-            data: {cart: cart}
         })
 
         return NextResponse.json({cart: user.cart})

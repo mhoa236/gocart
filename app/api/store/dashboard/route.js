@@ -13,10 +13,11 @@ export async function GET(request) {
         const orders = await prisma.order.findMany({where: {storeId}})
 
         //Get all products with rating for seller
-        const products = prisma.product.findMany({where: {storeId}})
+        const products = await prisma.product.findMany({where: {storeId}})
+        
         const ratings = await prisma.rating.findMany({
             where: {productId: {in: products.map(product => product.id)}},
-            include: {user: true, productL: true}
+            include: {user: true, product: true}
         }) 
 
         const dashboardData = {

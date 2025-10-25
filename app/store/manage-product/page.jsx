@@ -3,7 +3,6 @@ import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import Image from "next/image"
 import Loading from "@/components/Loading"
-import { productDummyData } from "@/assets/assets"
 import { useAuth, useUser } from "@clerk/clerk-react"
 import axios from "axios"
 
@@ -32,7 +31,7 @@ export default function StoreManageProducts() {
         try {
             const token = await getToken()
             const {data} = await axios.post('/api/store/stock-toggle', {productId}, {headers: {Authorization: `Bearer ${token}`}})
-            setProducts(prevProducts => prevProducts.map(product => product.id ===productId ? {...product, inStock: !product.inStock} : product))
+            setProducts(prevProducts => prevProducts.map(product => product.id === productId ? {...product, inStock: !product.inStock} : product))
 
             toast.success(data.messag)
         } catch (error) {
