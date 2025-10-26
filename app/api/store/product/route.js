@@ -21,7 +21,7 @@ export async function POST(request) {
         const mrp = Number(formData.get("mrp"))
         const price = Number(formData.get("price")) 
         const category = formData.get("category")
-        const images = formData.get("images")
+        const images = formData.getAll("images")
 
         if (!name || !description || !mrp || !price || !category || images.length <1) {
             return NextResponse.json({error: 'missing product details'}, {status: 400})
@@ -35,7 +35,7 @@ export async function POST(request) {
                 fileName: image.name,
                 folder: "products",
             })
-            const url = ImageKit.url({
+            const url = imagekit.url({
                 path: response.filePath,
                 transformation: [
                     {quality: 'auto'},

@@ -18,7 +18,7 @@ export default function Orders() {
     const router = useRouter()
 
     useEffect(() => {
-        const fetchOrders = async (params) => {
+        const fetchOrders = async () => {
             try {
                 const token = await getToken()
                 const {data} = await axios.get('/api/orders', {headers: {Authorization: `Bearer ${token}`}})

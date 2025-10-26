@@ -9,7 +9,7 @@ export async function GET(request) {
             include: {
                 rating: {
                     select: {
-                        createdAt: true, rating: true, review: true,user: {select: {name: true, image: true}}
+                        createdAt: true, rating: true, review: true, user: {select: {name: true, image: true}}
                     }
                 },
                 store: true,

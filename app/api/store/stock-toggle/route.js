@@ -7,14 +7,14 @@ import { NextResponse } from "next/server";
 //toggle stock of a product
 export async function POST(request) {
     try {
-        const {useId} = getAuth(request)
+        const {userId} = getAuth(request)
         const {productId} = await request.json()
 
         if (!productId) {
             return NextResponse.json({error: "missing details: productId"}, {status: 400})
         }
 
-        const storeId = await  authSeller(useId)
+        const storeId = await  authSeller(userId)
 
         if (!storeId) {
             return NextResponse.json({error: 'not authorized'}, {status: 401})
@@ -22,7 +22,7 @@ export async function POST(request) {
 
         //check if product exists
         const product = await prisma.product.findFirst({
-            where: {if: productId, storeId}
+            where: {id: productId, storeId}
         })
 
         if (!product) {

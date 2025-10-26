@@ -1,6 +1,7 @@
 'use client'
 import { assets } from "@/assets/assets"
 import { useAuth } from "@clerk/clerk-react"
+import axios from "axios"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
@@ -30,7 +31,7 @@ export default function StoreAddProduct() {
         try {
             //If no images are uploaded then return
             if (!images[1] && !images[2] && !images[3] && !images[4]) {
-                return toast.error('Please upload at leat 1 image')
+                return toast.error('Please upload at least 1 image')
             }
             setLoading(true)
 
@@ -62,7 +63,7 @@ export default function StoreAddProduct() {
             //reset image
             setImages({ 1: null, 2: null, 3: null, 4: null })
         } catch (error) {
-            toast.error(error?.response?.data?.error || error.messag)
+            toast.error(error?.response?.data?.error || error.message)
         }
         finally {
             setLoading(false)
