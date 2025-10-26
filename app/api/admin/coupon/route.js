@@ -8,8 +8,8 @@ import { NextResponse } from "next/server";
 //Add new coupon
 export async function POST(request) {
     try {
-        const {userId} = getAuth(request)
-        const isAdmin = await authAdmin()
+        const {userId} = getAuth()
+        const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
             return NextResponse.json({error: "not authorized"}, {status: 401})
@@ -39,8 +39,8 @@ export async function POST(request) {
 //Delete coupon /api/coupon?id=couponId
 export async function DELETE(request) {
     try {
-        const {userId} = getAuth(request)
-        const isAdmin = await authAdmin()
+        const {userId} = getAuth()
+        const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
             return NextResponse.json({error: "not authorized"}, {status: 401})
@@ -61,7 +61,7 @@ export async function DELETE(request) {
 export async function GET(request) {
     try {
         const {userId} = getAuth(request)
-        const isAdmin = await authAdmin()
+        const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
             return NextResponse.json({error: "not authorized"}, {status: 401})
