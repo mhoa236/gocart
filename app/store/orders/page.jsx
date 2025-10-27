@@ -104,10 +104,10 @@ export default function StoreOrders() {
                                             onChange={e => updateOrderStatus(order.id, e.target.value)}
                                             className="border-gray-300 rounded-md text-sm focus:ring focus:ring-blue-200"
                                         >
-                                            <option value="ORDER_PLACED">ĐÃ ĐẶT HÀNG</option>
-                                            <option value="PROCESSING">ĐANG XỬ LÝ</option>
-                                            <option value="SHIPPED">ĐÃ GỬI HÀNG</option>
-                                            <option value="DELIVERED">ĐÃ GIAO HÀNG</option>
+                                            <option value="ĐÃ_ĐẶT_HÀNG">ĐÃ ĐẶT HÀNG</option>
+                                            <option value="ĐANG_XỬ_LÝ">ĐANG XỬ LÝ</option>
+                                            <option value="ĐÃ_GỬI">ĐÃ GỬI</option>
+                                            <option value="ĐÃ_GIAO">ĐÃ GIAO</option>
                                         </select>
                                     </td>
                                     <td className="px-4 py-3 text-gray-500">
