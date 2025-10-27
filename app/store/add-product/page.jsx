@@ -8,7 +8,7 @@ import { toast } from "react-hot-toast"
 
 export default function StoreAddProduct() {
 
-    const categories = ['Electronics', 'Clothing', 'Home & Kitchen', 'Beauty & Health', 'Toys & Games', 'Sports & Outdoors', 'Books & Media', 'Food & Drink', 'Hobbies & Crafts', 'Others']
+    const categories = ['Điện thoại & Máy tính bảng', 'PC & Linh kiện', 'Laptop', 'Thiết bị đeo', 'Âm thanh', 'Màn hình & TV', 'Gaming & Console', 'Máy ảnh & Máy quay', 'Phụ kiện & Cáp sạc', 'Khác']
 
     const [images, setImages] = useState({ 1: null, 2: null, 3: null, 4: null })
     const [productInfo, setProductInfo] = useState({
