@@ -11,13 +11,13 @@ export async function POST(request) {
         const {productId} = await request.json()
 
         if (!productId) {
-            return NextResponse.json({error: "missing details: productId"}, {status: 400})
+            return NextResponse.json({error: "thiếu: productId"}, {status: 400})
         }
 
         const storeId = await  authSeller(userId)
 
         if (!storeId) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         //check if product exists
@@ -26,7 +26,7 @@ export async function POST(request) {
         })
 
         if (!product) {
-            return NextResponse.json({error: 'no product found'}, {status: 404})
+            return NextResponse.json({error: 'không tìm thấy sản phẩm nào'}, {status: 404})
         }
 
         await prisma.product.update({
@@ -34,7 +34,7 @@ export async function POST(request) {
             data: {inStock: !product.inStock}
         })
 
-        return NextResponse.json({message: "Product stock updated successfully"})
+        return NextResponse.json({message: "Đã cập nhật thành công kho sản phẩm"})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.code || error.message}, {status: 400})

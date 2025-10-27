@@ -11,7 +11,7 @@ export async function POST(request) {
         const storeId = await authSeller(userId)
 
         if (!storeId) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         const {orderID, status} = await request.json()
@@ -21,7 +21,7 @@ export async function POST(request) {
             data: {status}
         })
 
-        return NextResponse.json({message: "Order status updated"})
+        return NextResponse.json({message: "Trạng thái đơn hàng đã được cập nhật"})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.code || error.message}, {status: 400})
@@ -35,7 +35,7 @@ export async function GET(request) {
         const storeId = await authSeller(userId)
 
         if (!storeId) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         const orders = await prisma.order.findMany({

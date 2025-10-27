@@ -10,7 +10,7 @@ export async function GET(request) {
         const  username = searchParams.get('username').toLowerCase();
 
         if (!username) {
-            return NextResponse.json({error: "missing username"}, {status: 400})
+            return NextResponse.json({error: "thiếu username"}, {status: 400})
         }
 
         //Get store info & instock products with ratings
@@ -20,7 +20,7 @@ export async function GET(request) {
         })
 
         if (!store) {
-            return NextResponse.json({error: "missing username"}, {status: 400})
+            return NextResponse.json({error: "thiếu username"}, {status: 400})
         }
 
         return NextResponse.json({store})

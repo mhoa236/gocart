@@ -11,7 +11,7 @@ export async function POST(request) {
         const storeId =  await authSeller(userId)
 
         if (!storeId) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         //Get data from form
@@ -24,7 +24,7 @@ export async function POST(request) {
         const images = formData.getAll("images")
 
         if (!name || !description || !mrp || !price || !category || images.length <1) {
-            return NextResponse.json({error: 'missing product details'}, {status: 400})
+            return NextResponse.json({error: 'thiếu chi tiết sản phẩm'}, {status: 400})
         }
 
         //upload image to ImageKit
@@ -58,7 +58,7 @@ export async function POST(request) {
             }
         })
 
-        return NextResponse.json({message: "Product added successfully"})
+        return NextResponse.json({message: "Đã thêm sản phẩm thành công"})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.code || error.message}, {status: 400})
@@ -72,7 +72,7 @@ export async function GET(request) {
         const storeId =  await authSeller(userId)
 
         if (!storeId) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
         const products = await prisma.product.findMany({where: {storeId}})
 

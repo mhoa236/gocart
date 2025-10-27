@@ -22,6 +22,6 @@ export async function GET(request) {
         return NextResponse.json({products})
     } catch (error) {
         console.error(error);
-        return NextResponse.json({error: "An internal server error occurred"}, {status: 500});
+        return NextResponse.json({error: "Đã xảy ra lỗi máy chủ nội bộ"}, {status: 500});
     }
 }

@@ -10,11 +10,11 @@ export async function GET(request) {
         const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         const stores = await prisma.store.findMany({
-            where: {status: 'approved'},
+            where: {status: 'đã duyệt'},
             include: {user: true}
         })
 

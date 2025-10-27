@@ -8,12 +8,13 @@ import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { formatCurrency } from "@/lib/utils/formatCurrency"
 
 export default function Dashboard() {
 
     const {getToken} = useAuth()
 
-    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
+    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || 'VND'
 
     const router = useRouter()
 
@@ -26,10 +27,10 @@ export default function Dashboard() {
     })
 
     const dashboardCardsData = [
-        { title: 'Total Products', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
-        { title: 'Total Earnings', value: currency + dashboardData.totalEarnings, icon: CircleDollarSignIcon },
-        { title: 'Total Orders', value: dashboardData.totalOrders, icon: TagsIcon },
-        { title: 'Total Ratings', value: dashboardData.ratings.length, icon: StarIcon },
+        { title: 'Tổng số sản phẩm', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
+        { title: 'Tổng doanh thu', value: formatCurrency(dashboardData.totalEarnings) + currency, icon: CircleDollarSignIcon },
+        { title: 'Tổng số đơn hàng', value: dashboardData.totalOrders, icon: TagsIcon },
+        { title: 'Tổng số đánh giá', value: dashboardData.ratings.length, icon: StarIcon },
     ]
 
     const fetchDashboardData = async () => {
@@ -51,7 +52,7 @@ export default function Dashboard() {
 
     return (
         <div className=" text-slate-500 mb-28">
-            <h1 className="text-2xl">Seller <span className="text-slate-800 font-medium">Dashboard</span></h1>
+            <h1 className="text-2xl"><span className="text-slate-800 font-medium">Dashboard</span></h1>
 
             <div className="flex flex-wrap gap-5 my-10 mt-4">
                 {
@@ -67,7 +68,7 @@ export default function Dashboard() {
                 }
             </div>
 
-            <h2>Total Reviews</h2>
+            <h2>Tất cả đánh giá</h2>
 
             <div className="mt-5">
                 {
@@ -93,7 +94,7 @@ export default function Dashboard() {
                                         ))}
                                     </div>
                                 </div>
-                                <button onClick={() => router.push(`/product/${review.product.id}`)} className="bg-slate-100 px-5 py-2 hover:bg-slate-200 rounded transition-all">View Product</button>
+                                <button onClick={() => router.push(`/product/${review.product.id}`)} className="bg-slate-100 px-5 py-2 hover:bg-slate-200 rounded transition-all">Xem sản phẩm</button>
                             </div>
                         </div>
                     ))

@@ -19,7 +19,7 @@ export async function POST(request) {
         const  image = formData.get("image")
 
         if (!name || !username || !description || !email || !contact || !address || !image) {
-            return NextResponse.json({error: "missing store info"}, {status: 400})
+            return NextResponse.json({error: "thiếu thông tin cửa hàng"}, {status: 400})
         }
 
         //check if user has already registered a store
@@ -38,7 +38,7 @@ export async function POST(request) {
         })
 
         if (isUsernameTaken) {
-            return NextResponse.json({error: "username already taken"}, {status: 400})
+            return NextResponse.json({error: "username đã được sử dụng"}, {status: 400})
         }
 
         //image upload to imagekit
@@ -77,7 +77,7 @@ export async function POST(request) {
             data: {store: {connect: {id: newStore.id}}}
         })
 
-        return NextResponse.json({message: "applied, waiting for approval"})
+        return NextResponse.json({message: "đã nộp đơn, đang chờ phê duyệt"})
 
     } catch (error) {
         console.error(error);
@@ -100,7 +100,7 @@ export async function GET(request) {
             return NextResponse.json({status: store.status})
         }
 
-        return NextResponse.json({status: "not registered"})
+        return NextResponse.json({status: "chưa đăng ký"})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.code || error.message}, {status: 400})

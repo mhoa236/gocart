@@ -10,7 +10,7 @@ export async function GET(request) {
         const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         //Get total orders
@@ -30,7 +30,7 @@ export async function GET(request) {
             totalRevenue += order.total
         })
 
-        const revenue = totalRevenue.toFixed(2)
+        const revenue = totalRevenue.toFixed(0)
         //Total products on app
         const products = await prisma.product.count()
 

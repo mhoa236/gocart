@@ -15,7 +15,7 @@ export async function POST(request) {
             data: {cart: cart}
         })
 
-        return NextResponse.json({message: 'Cart updated'})
+        return NextResponse.json({message: 'Giỏ hàng đã được cập nhật'})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.message}, {status:400})

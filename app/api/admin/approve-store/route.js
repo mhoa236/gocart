@@ -11,24 +11,24 @@ export async function POST(request) {
         const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         const {storeId, status} = await request.json()
 
-        if (status === 'approved') {
+        if (status === 'đã duyệt') {
             await prisma.store.update({
                 where: {id: storeId},
-                data: {status: "approved", isActive: true}
+                data: {status: "đã duyệt", isActive: true}
             })
-        } else if (status === 'rejected') {
+        } else if (status === 'đã từ chối') {
             await prisma.store.update({
                 where: {id: storeId},
-                data: {status: "rejected"}
+                data: {status: "đã từ chối"}
             })
         }
 
-        return NextResponse.json({message: status + 'successfully'})
+        return NextResponse.json({message: status })
     } catch (error) {
         console.error(error)
         return NextResponse.json({error: error.code || error.message}, {status: 400})
@@ -42,11 +42,11 @@ export async function GET(request) {
         const isAdmin = await authAdmin(userId)
 
         if (!isAdmin) {
-            return NextResponse.json({error: 'not authorized'}, {status: 401})
+            return NextResponse.json({error: 'không được cấp quyền'}, {status: 401})
         }
 
         const stores = await prisma.store.findMany({
-            where: {status: {in: ["pending", "rejected"]}},
+            where: {status: {in: ["đang chờ xử lý", "đã từ chối"]}},
             include: {user: true}
         })
 

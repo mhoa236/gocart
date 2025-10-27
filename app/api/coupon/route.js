@@ -10,25 +10,26 @@ export async function POST(request) {
         const {code} = await request.json()
 
         const coupon = await prisma.coupon.findUnique({
-            where: {code: code.toUppeCase()},
+            where: {code: code.toUpperCase(),
             expiresAt: {gt: new Date()}
+            }
         })
 
         if (!coupon) {
-            return NextResponse.json({error: "Coupon not found"}, {status: 404})
+            return NextResponse.json({error: "Không tìm thấy coupon"}, {status: 404})
         }
 
         if (coupon.forNewUser) {
             const userorders = await prisma.order.findMany({where: {userId}})
             if (userorders.length > 0) {
-                return NextResponse.json({error: "Coupon valid for new users"}, {status: 400})
+                return NextResponse.json({error: "Coupon có hiệu lực cho người dùng mới"}, {status: 400})
             }
         }
 
         if (coupon.forMember) {
             const hasMembership = has({plan: 'Membership'})
             if (!hasMembership) {
-                return NextResponse.json({error: "Coupon valid for members"}, {status: 400})
+                return NextResponse.json({error: "Coupon có hiệu lực cho hội viên plus"}, {status: 400})
             }
         }
 

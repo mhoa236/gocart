@@ -11,20 +11,20 @@ export async function GET(request) {
         const order = await prisma.order.findUnique({where: {id: orderId, userId}})
 
         if (!order) {
-            return NextResponse.json({error: "Order not found"}, {status: 404})
+            return NextResponse.json({error: "Không tìm thấy đơn hàng"}, {status: 404})
         }
 
         const isAlreadyRated = await prisma.rating.findFirst({where: {productId, orderId}})
 
         if (isAlreadyRated) {
-            return NextResponse.json({error: "Product already rated"}, {status: 400})
+            return NextResponse.json({error: "Sản phẩm đã được đánh giá"}, {status: 400})
         }
 
         const response  = await prisma.rating.create({
             data: {userId, productId, rating, review, orderId}
         })
 
-        return NextResponse.json({message: "Rating added successfully"})
+        return NextResponse.json({message: "Đã thêm đánh giá thành công"})
     } catch (error) {
         console.error(error);
         return NextResponse.json({error: error.code || error.message}, {status: 400})
@@ -36,7 +36,7 @@ export async function POST(request) {
     try {
         const {userId} = getAuth(request)
         if (!userId) {
-            return NextResponse.json({error: "Unauthorized"}, {status: 401})
+            return NextResponse.json({error: "không được cấp quyền"}, {status: 401})
         }
         const ratings = await prisma.rating.findMany({
             where: {userId}

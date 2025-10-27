@@ -2,19 +2,19 @@ import prisma from "@/lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { PaymentMethod } from "@prisma/client";
 import { NextResponse } from "next/server";
-
+import Stripe from "stripe";
 
 export async function POST(request) {
     try {
-        const {userId, has} = getAuth()
+        const {userId, has} = getAuth(request)
         if (!userId) {
-            return NextResponse.json({error: "not authorized"}, {status: 401})
+            return NextResponse.json({error: "không được cấp quyền"}, {status: 401})
         }
         const {addressId, items, couponCode, paymentMethod} = await request.json()
 
         //Check if all required fields are present
-        if (!addressId || !items || !couponCode || !Array.isArray(items) || !items.length === 0) {
-            return NextResponse.json({error: "missing order details"}, {status: 401})
+        if (!addressId || !items || !Array.isArray(items) || items.length === 0) {
+            return NextResponse.json({error: "thiếu chi tiết đơn hàng"}, {status: 401})
         } 
 
         let coupon = null;
@@ -24,7 +24,7 @@ export async function POST(request) {
             where: {code: couponCode}
         })
         if (!coupon) {
-            return NextResponse.json({error: "Coupon not found"}, {status: 400})
+            return NextResponse.json({error: "Không tìm thấy coupon"}, {status: 400})
         }
         }
 
@@ -32,17 +32,17 @@ export async function POST(request) {
         if (couponCode && coupon.forNewUser) {
             const userorders = await prisma.order.findMany({where: {userId}})
             if (userorders.length > 0) {
-                return NextResponse.json({error: "Coupon valid for new users"}, {status: 400})
+                return NextResponse.json({error: "Coupon có hiệu lực cho người dùng mới"}, {status: 400})
             }
         }
 
         const isMember = has({plan: 'Membership'})
 
-        //Check if coupon is applicablr for members
+        //Check if coupon is applicable for members
         if (couponCode && coupon.forMember) {
             const hasMembership = has({plan: 'Membership'})
             if (!isMember) {
-                return NextResponse.json({error: "Coupon valid for members"}, {status: 400})
+                return NextResponse.json({error: "Coupon có hiệu lực cho hội viên plus"}, {status: 400})
             }
         }
 
@@ -71,18 +71,18 @@ export async function POST(request) {
                 total -= (total * coupon.discount) / 100;
             }
             if (!isMember && !isShippingFeeAdded) {
-                total += 1.5;
+                total += 30000;
                 isShippingFeeAdded = true 
             }
 
-            fullAmount += parseFloat(total.toFixed(2))
+            fullAmount += parseFloat(total.toFixed(0))
 
             const order = await prisma.order.create({
                 data: {
                     userId,
                     storeId,
                     addressId,
-                    total: parseFloat(total.toFixed(2)),
+                    total: parseFloat(total.toFixed(0)),
                     paymentMethod,
                     isCouponUsed: coupon ? true : false,
                     coupon: coupon ? coupon: {},
@@ -98,24 +98,53 @@ export async function POST(request) {
             orderIds.push(order.id)
         } 
 
+        if (paymentMethod === 'STRIPE') {
+            const stripe = Stripe(process.env.STRIPE_SECRET_KEY)
+            const origin = await request.headers.get('origin')
+
+            const session = await stripe.checkout.sessions.create({
+                payment_method_types: ['card'],
+                line_items: [{
+                    price_data: {
+                        currency: '₫',
+                        product_data: {
+                            name: 'Order'
+                        },
+                        unit_amount: Math.round(fullAmount * 100)
+                    },
+                    quantity: 1
+                }],
+                expires_at: Math.floor(Date.now() / 1000) + 30 * 60, //current time + 30 minutes
+                mode: 'payment',
+                success_url: `${origin}/loading?nextUrl=orders`,
+                cancel_url: `${origin}/cart`,
+                metadata: {
+                    orderIds: orderIds.join(','),
+                    userId,
+                    appId: 'gocart'
+                }
+            })
+            return NextResponse.json({session})
+        }
+
         //Clear cart
         await prisma.user.update({
             where: {id: userId},
             data: {cart: {}}
         })
 
-        return NextResponse.json({message: 'Orders placed successfully'})
+        return NextResponse.json({message: 'Đã đặt hàng thành công'})
 
     } catch (error) {
         console.error(error);
-        return NextResponse.apply.json({error: error.code || error.message}, {status: 400})
+        return NextResponse.json({error: error.code || error.message}, {status: 400})
     }
 }
 
 //Get all orders for user
 export async function GET(request) {
     try {
-        const {userId} = getAuth()
+        const {userId} = getAuth(request)
         const orders = await prisma.order.findMany({
             where: {userId, OR: [
                 {paymentMethod: PaymentMethod.COD}, {AND: [{paymentMethod: PaymentMethod.STRIPE}, {isPaid: true}]}
@@ -131,6 +160,6 @@ export async function GET(request) {
         return NextResponse.json({orders})
     } catch (error) {
         console.error(error);
-        return NextResponse.apply.json({error: error.message}, {status: 400})
+        return NextResponse.json({error: error.message}, {status: 400})
     }
 }

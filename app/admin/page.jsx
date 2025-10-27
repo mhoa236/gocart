@@ -1,5 +1,4 @@
 'use client'
-import { dummyAdminDashboardData } from "@/assets/assets"
 import Loading from "@/components/Loading"
 import OrdersAreaChart from "@/components/OrdersAreaChart"
 import { useAuth } from "@clerk/nextjs"
@@ -7,12 +6,13 @@ import axios from "axios"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { formatCurrency } from "@/lib/utils/formatCurrency"
 
 export default function AdminDashboard() {
 
     const {getToken} = useAuth()
 
-    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
+    const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || 'VND'
 
     const [loading, setLoading] = useState(true)
     const [dashboardData, setDashboardData] = useState({
@@ -24,10 +24,10 @@ export default function AdminDashboard() {
     })
 
     const dashboardCardsData = [
-        { title: 'Total Products', value: dashboardData.products, icon: ShoppingBasketIcon },
-        { title: 'Total Revenue', value: currency + dashboardData.revenue, icon: CircleDollarSignIcon },
-        { title: 'Total Orders', value: dashboardData.orders, icon: TagsIcon },
-        { title: 'Total Stores', value: dashboardData.stores, icon: StoreIcon },
+        { title: 'Tổng số sản phẩm', value: dashboardData.products, icon: ShoppingBasketIcon },
+        { title: 'Tổng doanh thu', value: formatCurrency(dashboardData.revenue) + currency, icon: CircleDollarSignIcon },
+        { title: 'Tổng số đơn hàng', value: dashboardData.orders, icon: TagsIcon },
+        { title: 'Tổng số cửa hàng', value: dashboardData.stores, icon: StoreIcon },
     ]
 
     const fetchDashboardData = async () => {
