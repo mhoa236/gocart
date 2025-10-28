@@ -28,7 +28,7 @@ export default function AdminStores() {
     const toggleIsActive = async (storeId) => {
         try {
             const token = await getToken()
-            const {data} = await axios.get('/api/admin/stores', {storeId}, {headers: {Authorization: `Bearer ${token}`}})
+            const {data} = await axios.post('/api/admin/toggle-store', {storeId}, {headers: {Authorization: `Bearer ${token}`}})
             await fetchStores()
             toast.success(data.message)
         } catch (error) {

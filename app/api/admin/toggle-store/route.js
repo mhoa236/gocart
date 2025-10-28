@@ -19,12 +19,12 @@ export async function POST(request) {
             if (!isAdmin) {
             return NextResponse.json({error: "thiếu storeId"}, {status: 400})
         }
+        }
         
         //Find store
         const store = await prisma.store.findUnique({where: {id: storeId}})
 
         if (!store) {
-            if (!isAdmin) {
             return NextResponse.json({error: "không tìm thấy cửa hàng"}, {status: 400})
         }
         
@@ -35,7 +35,7 @@ export async function POST(request) {
 
         return NextResponse.json({message: "Cửa hàng đã được cập nhật thành công"})
         
-    }}
+    
     } catch (error) {
         console.error(error)
         return NextResponse.json({error: error.code || error.message}, {status: 400})
