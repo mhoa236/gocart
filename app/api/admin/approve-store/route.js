@@ -16,15 +16,15 @@ export async function POST(request) {
 
         const {storeId, status} = await request.json()
 
-        if (status === 'đã duyệt') {
+        if (status === 'đã_duyệt') {
             await prisma.store.update({
                 where: {id: storeId},
-                data: {status: "đã duyệt", isActive: true}
+                data: {status: "đã_duyệt", isActive: true}
             })
-        } else if (status === 'đã từ chối') {
+        } else if (status === 'đã_từ_chối') {
             await prisma.store.update({
                 where: {id: storeId},
-                data: {status: "đã từ chối"}
+                data: {status: "đã_từ_chối"}
             })
         }
 
@@ -46,7 +46,7 @@ export async function GET(request) {
         }
 
         const stores = await prisma.store.findMany({
-            where: {status: {in: ["đang chờ xử lý", "đã từ chối"]}},
+            where: {status: {in: ["đang_chờ_xử_lý", "đã_từ_chối"]}},
             include: {user: true}
         })
 

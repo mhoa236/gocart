@@ -14,7 +14,7 @@ export async function GET(request) {
         }
 
         const stores = await prisma.store.findMany({
-            where: {status: 'đã duyệt'},
+            where: {status: 'đã_duyệt'},
             include: {user: true}
         })
 

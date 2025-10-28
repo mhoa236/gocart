@@ -12,9 +12,9 @@ const StoreInfo = ({store}) => {
 
                 {/* Status Badge */}
                 <span
-                    className={`text-xs font-semibold px-4 py-1 rounded-full ${store.status === 'đang chờ xử lý'
+                    className={`text-xs font-semibold px-4 py-1 rounded-full ${store.status === 'đang_chờ_xử_lý'
                         ? 'bg-yellow-100 text-yellow-800'
-                        : store.status === 'đã từ chối'
+                        : store.status === 'đã_từ_chối'
                         ? 'bg-red-100 text-red-800'
                         : 'bg-green-100 text-green-800'
                         }`}

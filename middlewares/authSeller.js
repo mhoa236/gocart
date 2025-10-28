@@ -9,7 +9,7 @@ const authSeller = async (userId) => {
         })
 
         if (user.store) {
-            if (user.store.status === 'đã duyệt') {
+            if (user.store.status === 'đã_duyệt') {
                 return user.store.id
             }
         }

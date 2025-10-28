@@ -31,7 +31,7 @@ export async function GET(request) {
             totalRevenue += order.total
         })
 
-        const revenue = totalRevenue.toFixed(0)
+        const revenue = Math.round(totalRevenue)
         //Total products on app
         const products = await prisma.product.count()
 
