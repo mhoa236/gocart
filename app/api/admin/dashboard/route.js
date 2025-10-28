@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import authAdmin from "@/middlewares/authAdmin";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { formatCurrency } from "@/lib/utils/formatCurrency";
 
 //Get dashboard data for admin (total orders, stores, products, revenue)
 export async function GET(request) {
@@ -30,7 +31,7 @@ export async function GET(request) {
             totalRevenue += order.total
         })
 
-        const revenue = totalRevenue.toFixed(0)
+        const revenue = formatCurrency(totalRevenue.toFixed(0))
         //Total products on app
         const products = await prisma.product.count()
 

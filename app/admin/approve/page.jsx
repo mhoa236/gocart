@@ -58,10 +58,10 @@ export default function AdminApprove() {
 
                             {/* Actions */}
                             <div className="flex gap-3 pt-2 flex-wrap">
-                                <button onClick={() => toast.promise(handleApprove({ storeId: store.id, status: 'approved' }), { loading: "đang duyệt" })} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm" >
+                                <button onClick={() => toast.promise(handleApprove({ storeId: store.id, status: 'đã duyệt' }), { loading: "đang duyệt" })} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 text-sm" >
                                     Phê duyệt
                                 </button>
-                                <button onClick={() => toast.promise(handleApprove({ storeId: store.id, status: 'rejected' }), { loading: 'đang từ chối' })} className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600 text-sm" >
+                                <button onClick={() => toast.promise(handleApprove({ storeId: store.id, status: 'đã từ chối' }), { loading: 'đang từ chối' })} className="px-4 py-2 bg-slate-500 text-white rounded hover:bg-slate-600 text-sm" >
                                     Từ chối
                                 </button>
                             </div>

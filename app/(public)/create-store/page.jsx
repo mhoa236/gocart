@@ -37,19 +37,19 @@ export default function CreateStore() {
         const token = await getToken()
         try {
             const {data} = await axios.get('/api/store/create', {headers: {Authorization: `Bearer ${token}`}})
-            if (['approved', 'rejected', 'pending'].includes(data.status)) {
+            if (['đã duyệt', 'đã từ chối', 'đang chờ xử lý'].includes(data.status)) {
                 setStatus(data.status)
                 setAlreadySubmitted(true)
                 switch (data.status) {
-                    case "approved":
+                    case "đã duyệt":
                         setMessage("Cửa hàng của bạn đã được phê duyệt, bây giờ bạn có thể thêm sản phẩm vào cửa hàng của mình từ dashboard")
                         setTimeout(() => router.push("/store"), 5000)
                         break;
-                    case "rejected":
+                    case "đã từ chối":
                         setMessage("Yêu cầu mở cửa hàng của bạn đã bị từ chối, hãy liên hệ với quản trị viên để biết thêm chi tiết")
                         setTimeout(() => router.push("/store"), 5000)
                         break;
-                    case "pending":
+                    case "đang chờ xử lý":
                         setMessage("Cửa hàng của bạn đang chờ xử lý, vui lòng đợi quản trị viên phê duyệt cửa hàng của bạn")
                         setTimeout(() => router.push("/store"), 5000)
                         break;
@@ -146,7 +146,7 @@ export default function CreateStore() {
             ) : (
                 <div className="min-h-[80vh] flex flex-col items-center justify-center">
                     <p className="sm:text-2xl lg:text-3xl mx-5 font-semibold text-slate-500 text-center max-w-2xl">{message}</p>
-                    {status === "approved" && <p className="mt-5 text-slate-400">chuyển hướng đến dashboard trong <span className="font-semibold">5 giây</span></p>}
+                    {status === "đã duyệt" && <p className="mt-5 text-slate-400">chuyển hướng đến dashboard trong <span className="font-semibold">5 giây</span></p>}
                 </div>
             )}
         </>
