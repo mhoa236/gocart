@@ -106,7 +106,7 @@ export async function POST(request) {
                 payment_method_types: ['card'],
                 line_items: [{
                     price_data: {
-                        currency: '₫',
+                        currency: 'vnd',
                         product_data: {
                             name: 'Order'
                         },
