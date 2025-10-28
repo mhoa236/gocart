@@ -110,7 +110,7 @@ export async function POST(request) {
                         product_data: {
                             name: 'Order'
                         },
-                        unit_amount: Math.round(fullAmount * 100)
+                        unit_amount: Math.round(fullAmount)
                     },
                     quantity: 1
                 }],
