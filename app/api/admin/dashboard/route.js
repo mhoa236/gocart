@@ -31,7 +31,7 @@ export async function GET(request) {
             totalRevenue += order.total
         })
 
-        const revenue = formatCurrency(totalRevenue.toFixed(0))
+        const revenue = totalRevenue.toFixed(0)
         //Total products on app
         const products = await prisma.product.count()
 
@@ -39,8 +39,8 @@ export async function GET(request) {
             orders,
             stores,
             products,
-            revenue,
-            allOrders
+            revenue: formatCurrency(revenue),
+            allOrders,
         }
 
     return NextResponse.json({dashboardData})
